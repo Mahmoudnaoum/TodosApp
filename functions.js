@@ -1,4 +1,3 @@
-
 // get todos stored in the local storage
 const getLocalTodos = function() {
     const todosJSON = localStorage.getItem('todos')
@@ -61,10 +60,23 @@ const removeTodo = function( id ){
         todos.splice( todoIndex, 1)
     }
 
-    renderTodos( todos, filters)
     todosUpload( todos )
+    renderTodos( todos, filters)
     
 }
+
+// toggle completed value in the todo
+const todoToggle = function( id ){
+    const todo = todos.find( function(todo) {
+        return todo.id === id
+    })
+
+    if( todo != undefined )
+    {
+        todo.completed = !todo.completed
+    }
+}
+
 // create a todo DOM
 const createTodoDOM = function( todo ) {
     const todoElement = document.createElement('div')
@@ -72,6 +84,13 @@ const createTodoDOM = function( todo ) {
     const todoCheckbox = document.createElement('input')
     todoCheckbox.setAttribute('type', 'checkbox')
     todoElement.appendChild(todoCheckbox)
+    todoCheckbox.checked = todo.completed
+    todoCheckbox.addEventListener('change', function( e ){
+       
+        todoToggle( todo.id )
+        todosUpload( todos )
+        renderTodos( todos, filters)
+    })
     
     const todoText = document.createElement('span')
     todoText.textContent = todo.text
@@ -79,10 +98,10 @@ const createTodoDOM = function( todo ) {
 
     const todoDelete = document.createElement('button')
     todoDelete.textContent = 'X'
+    todoElement.appendChild(todoDelete)
     todoDelete.addEventListener('click', function( e ) {
         removeTodo( todo.id )
-    })
-    todoElement.appendChild(todoDelete)
+    }) 
 
     return todoElement
 }
