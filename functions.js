@@ -38,13 +38,30 @@ const renderTodos = function( todos, filters) {
 }
 
 // write todos to the html
-
 const showTodos = function( todos ) {
     todos.forEach( function( todo ){
-        const p = document.createElement('p')
-        p.textContent = todo.text
+        const p = createTodoDOM(todo)
        document.querySelector('#todos').appendChild(p)
     }) 
+}
+
+// create a todo DOM
+const createTodoDOM = function( todo ) {
+    const todoElement = document.createElement('div')
+
+    const todoCheckbox = document.createElement('input')
+    todoCheckbox.setAttribute('type', 'checkbox')
+    todoElement.appendChild(todoCheckbox)
+    
+    const todoText = document.createElement('span')
+    todoText.textContent = todo.text
+    todoElement.appendChild(todoText)
+
+    const todoDelete = document.createElement('button')
+    todoDelete.textContent = 'X'
+    todoElement.appendChild(todoDelete)
+
+    return todoElement
 }
 
 // show todos based on the search input
