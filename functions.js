@@ -11,6 +11,7 @@ const getLocalTodos = function() {
         return []
     }
 }
+
 // render the todos
 const renderTodos = function( todos, filters) {
 
@@ -37,6 +38,12 @@ const renderTodos = function( todos, filters) {
     
 }
 
+// update the localStorage
+const todosUpload = function(todos){
+
+    localStorage.setItem('todos', JSON.stringify( todos ))
+}
+
 // write todos to the html
 const showTodos = function( todos ) {
     todos.forEach( function( todo ){
@@ -44,7 +51,20 @@ const showTodos = function( todos ) {
        document.querySelector('#todos').appendChild(p)
     }) 
 }
+const removeTodo = function( id ){
+    const todoIndex = todos.findIndex( function( todo ){
+        return todo.id === id
+    })
 
+    if( todoIndex > -1 )
+    {
+        todos.splice( todoIndex, 1)
+    }
+
+    renderTodos( todos, filters)
+    todosUpload( todos )
+    
+}
 // create a todo DOM
 const createTodoDOM = function( todo ) {
     const todoElement = document.createElement('div')
@@ -59,6 +79,9 @@ const createTodoDOM = function( todo ) {
 
     const todoDelete = document.createElement('button')
     todoDelete.textContent = 'X'
+    todoDelete.addEventListener('click', function( e ) {
+        removeTodo( todo.id )
+    })
     todoElement.appendChild(todoDelete)
 
     return todoElement
@@ -74,20 +97,21 @@ const searchFilter = function( todos, filters ) {
     })
 }
 
+
 // add new todo to the localstorage and render it 
 const addNewTodoListener = function( todos, filters ) {
 
     document.querySelector('#todo-form').addEventListener('submit', function (e){
         e.preventDefault()
         const newTodo = {
+            id: uuidv4(),
             text: '',
             completed: false 
         }
         newTodo.text = e.target.todoinput.value
         todos.push( newTodo )
         renderTodos( todos, filters)
-        
-        localStorage.setItem('todos', JSON.stringify( todos ))
+        todosUpload( todos)
         e.target.todoinput.value = ''  
     
     })
