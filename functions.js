@@ -1,5 +1,5 @@
 // get todos stored in the local storage
-const getLocalTodos = function() {
+const getLocalTodos = ()=> {
     const todosJSON = localStorage.getItem('todos')
     if( todosJSON != null )
     {
@@ -12,7 +12,7 @@ const getLocalTodos = function() {
 }
 
 // render the todos
-const renderTodos = function( todos, filters) {
+const renderTodos = ( todos, filters) => {
 
     let filteredTodos = todos.filter( function(todo) {
         return todo.text.toLowerCase().includes( filters.searchText.toLowerCase())
@@ -38,13 +38,13 @@ const renderTodos = function( todos, filters) {
 }
 
 // update the localStorage
-const todosUpload = function(todos){
+const todosUpload = (todos)=>{
 
     localStorage.setItem('todos', JSON.stringify( todos ))
 }
 
 // write todos to the html
-const showTodos = function( todos ) {
+const showTodos = ( todos )=> {
     todos.forEach( function( todo ){
         const p = createTodoDOM(todo)
        document.querySelector('#todos').appendChild(p)
@@ -78,7 +78,7 @@ const todoToggle = function( id ){
 }
 
 // create a todo DOM
-const createTodoDOM = function( todo ) {
+const createTodoDOM = ( todo )=> {
     const todoElement = document.createElement('div')
 
     const todoCheckbox = document.createElement('input')
@@ -107,7 +107,7 @@ const createTodoDOM = function( todo ) {
 }
 
 // show todos based on the search input
-const searchFilter = function( todos, filters ) {
+const searchFilter = ( todos, filters )=> {
     document.querySelector('#todo-search').addEventListener('input', function(e){
     
         filters.searchText = e.target.value
@@ -118,7 +118,7 @@ const searchFilter = function( todos, filters ) {
 
 
 // add new todo to the localstorage and render it 
-const addNewTodoListener = function( todos, filters ) {
+const addNewTodoListener = ( todos, filters )=> {
 
     document.querySelector('#todo-form').addEventListener('submit', function (e){
         e.preventDefault()
@@ -138,7 +138,7 @@ const addNewTodoListener = function( todos, filters ) {
 }
 
 // hide completed todos
-const hideCompletedTodosListener = function( todos, filter ) {
+const hideCompletedTodosListener = ( todos, filter )=> {
     document.querySelector('#hide-todos').addEventListener('change', function(e){
         filters.hideCompletedTodos = e.target.checked
         renderTodos( todos, filters)
